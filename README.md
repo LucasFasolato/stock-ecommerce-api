@@ -1,98 +1,303 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🧾 Stock Ecommerce API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Backend API desarrollada con **NestJS** para gestión de **productos**, **stock**, y **proformas (pedidos)**, con **autenticación JWT**, **roles**, **auditoría de movimientos** y **documentación Swagger**.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Este proyecto cubre el **core de un sistema comercial real**, preparado para integrarse con un frontend o panel administrativo.
 
-## Description
+---
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Features principales
 
-## Project setup
+### 🔐 Autenticación y seguridad
 
-```bash
-$ npm install
+* Login con **JWT**
+* Roles (`ADMIN`)
+* Guards y decorators reutilizables
+* Protección por endpoint
+* Headers de seguridad con **Helmet**
+* Validación global con `class-validator`
+
+---
+
+### 📦 Productos
+
+* CRUD de productos (admin)
+* Catálogo público de productos activos
+* Campos:
+
+  * SKU
+  * nombre
+  * descripción
+  * precio
+  * stock actual
+  * estado activo/inactivo
+
+---
+
+### 📊 Stock
+
+* Control de stock **transaccional**
+* Tipos de movimiento:
+
+  * `IN` (ingreso)
+  * `OUT` (egreso)
+  * `ADJUST` (ajuste)
+* Auditoría completa:
+
+  * usuario
+  * fecha
+  * referencia (ej: orderId)
+* Stock actual persistido en producto
+* Historial completo de movimientos
+
+---
+
+### 🧾 Proformas / Órdenes
+
+* Creación de proformas públicas (checkout sin pago)
+* Creación de proformas como admin
+* Estados:
+
+  * `SUBMITTED`
+  * `CONFIRMED`
+  * `CANCELLED`
+* Confirmación de proforma:
+
+  * valida stock
+  * descuenta stock
+  * crea movimientos `OUT`
+  * todo en **una transacción**
+* Cancelación segura
+* Listados con filtros (`status`)
+
+---
+
+### 📚 Documentación
+
+* Swagger UI disponible
+* Endpoints agrupados
+* Autenticación Bearer integrada
+* DTOs visibles y claros
+
+---
+
+## 🛠️ Tecnologías
+
+* **Node.js**
+* **NestJS**
+* **TypeORM**
+* **PostgreSQL**
+* **JWT**
+* **Swagger**
+* **Docker** (Postgres)
+* **ESLint + Prettier**
+
+---
+
+## 📂 Estructura del proyecto
+
+```
+src/
+├── auth/
+├── users/
+├── products/
+├── stock/
+├── orders/
+├── database/
+├── config/
+├── health/
+└── main.ts
 ```
 
-## Compile and run the project
+Arquitectura **modular**, orientada a escalabilidad y mantenimiento.
+
+---
+
+## ⚙️ Setup del proyecto
+
+### 1️⃣ Clonar repositorio
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+git clone <repo-url>
+cd stock-ecommerce-api
 ```
 
-## Run tests
+---
+
+### 2️⃣ Instalar dependencias
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm install
 ```
 
-## Deployment
+---
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+### 3️⃣ Variables de entorno
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+Crear archivo `.env`:
+
+```env
+PORT=3010
+
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASSWORD=postgres
+DB_NAME=stock_ecommerce
+
+JWT_SECRET=supersecret
+JWT_EXPIRES_IN=1d
+```
+
+---
+
+### 4️⃣ Levantar base de datos (Docker)
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+docker compose up -d
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+### 5️⃣ Ejecutar migraciones
 
-Check out a few resources that may come in handy when working with NestJS:
+```bash
+npm run migration:run
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+### 6️⃣ Levantar el servidor
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+npm run start:dev
+```
 
-## Stay in touch
+Servidor disponible en:
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+http://localhost:3010
+```
 
-## License
+---
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 📚 Swagger
+
+Documentación interactiva:
+
+```
+http://localhost:3010/docs
+```
+
+* Autenticarse con **Authorize**
+* Usar `Bearer <token>`
+* Probar todos los endpoints desde la UI
+
+---
+
+## 🔑 Ejemplos de uso
+
+### 🔐 Login
+
+**POST** `/auth/login`
+
+```json
+{
+  "email": "admin@admin.com",
+  "password": "admin123"
+}
+```
+
+Respuesta:
+
+```json
+{
+  "accessToken": "..."
+}
+```
+
+---
+
+### 📦 Crear producto (admin)
+
+**POST** `/products`
+
+```json
+{
+  "sku": "SKU-001",
+  "name": "Lampara LED 9W",
+  "description": "Luz fría",
+  "price": 1999.99
+}
+```
+
+---
+
+### 🧾 Crear proforma (público)
+
+**POST** `/orders`
+
+```json
+{
+  "customerName": "Juan Perez",
+  "customerEmail": "juan@mail.com",
+  "items": [
+    {
+      "productId": "<product-uuid>",
+      "quantity": 2
+    }
+  ]
+}
+```
+
+---
+
+### ✅ Confirmar proforma (admin)
+
+**POST** `/orders/{id}/confirm`
+
+* Cambia estado a `CONFIRMED`
+* Descuenta stock
+* Registra movimientos
+
+---
+
+### 📊 Ingreso de stock (admin)
+
+**POST** `/stock/in`
+
+```json
+{
+  "productId": "<product-uuid>",
+  "quantity": 10,
+  "note": "Ingreso inicial"
+}
+```
+
+---
+
+## 🧠 Decisiones de diseño
+
+* **Stock transaccional** (consistencia > performance)
+* **Snapshot de precios** en proformas
+* **Separación clara** entre público y admin
+* **Auditoría completa**
+* **Sin pagos online** (listo para integrar luego)
+
+---
+
+## 🚧 Próximos pasos posibles
+
+* Panel admin (Next.js)
+* Integración de pagos
+* Reportes
+* Multi-sucursal
+* Tests automatizados
+* Rate limiting
+
+---
+
+## 👤 Autor
+
+Proyecto desarrollado por **Lucas Fasolato**
+Backend Engineer · Systems Engineering Student
